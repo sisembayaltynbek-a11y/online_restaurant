@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <section class="cart-wrapper">
+
+        <div class="cart-header">
+            <h1>Your Cart</h1>
+            <a href="{% url 'meals' %}" class="continue">← Continue shopping</a>
+        </div>
+
+        {% if cart %}
+            <div class="cart-box">
+
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Meal</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for id, item in cart.items %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>${{ item.price }}</td>
+                                <td>x{{ item.qty }}</td>
+                                <td>${{ item.price|floatformat:2|add:"0"|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Total</strong></td>
+                            <td><strong>${{ total }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- DELIVERY SELECTION -->
+                <form method="post" class="delivery-form">
+                    {% csrf_token %}
+
+                    <h2>Choose delivery</h2>
+
+                    {% if deliveries %}
+                        <div class="delivery-list">
+                            {% for d in deliveries %}
+                                <label class="delivery-card">
+                                    <input type="radio" name="delivery" value="{{ d.id }}" required>
+                                    <div class="delivery-info">
+                                        <strong>{{ d.first_name }} {{ d.last_name }}</strong>
+                                        <span>Experience: {{ d.working_age }} years</span>
+                                        <span>📞 {{ d.phone_number }}</span>
+                                    </div>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="no-delivery">No free deliveries available now.</p>
+                    {% endif %}
+
+                    <button type="submit" class="checkout-btn">
+                        Confirm order
+                    </button>
+                </form>
+
+            </div>
+        {% else %}
+            <p class="empty-cart">Your cart is empty.</p>
+        {% endif %}
+
+    </section>
+{% endblock %}

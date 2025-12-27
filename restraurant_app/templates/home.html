@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}Foodly{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+    <section class="hero">
+        {% if user.is_authenticated %}
+            <h2>Welcome back, {{ user.username }}!</h2>
+            <p>Explore our delicious meal types below:</p>
+        {% else %}
+            <h2>Welcome to Foodly!</h2>
+            <p>Your go-to app for delicious meals and recipes.</p>
+            <div class="hero-buttons">
+                <a href="{% url 'account_signup' %}" class="btn primary-btn">Sign Up</a>
+                <a href="{% url 'account_login' %}" class="btn secondary-btn">Login</a>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="meal-types">
+        <h3>Different Types of Meals</h3>
+        <div class="meal-categories">
+            {% for category in all_types %}
+                <div class="category-card">
+                    {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default-category.jpg' %}" alt="No image">
+                    {% endif %}
+                    <h4>{{ category.name }}</h4>
+                </div>
+            {% empty %}
+                <p>No categories available.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="meal-types">
+        <h3>Current Staged and Fast Deliveries</h3>
+        <div class="deliveries">
+            {% for employee in staged_employees %}
+                <div class="delivery">
+                    {% if employee.image %}
+                        <img src="{{ employee.image.url }}" alt="{{ employee.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default-employee.jpg' %}" alt="No image">
+                    {% endif %}
+                    <h4>{{ employee.first_name }} {{ employee.last_name }}</h4>
+                </div>
+            {% empty %}
+                <p>No Deliveries available.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

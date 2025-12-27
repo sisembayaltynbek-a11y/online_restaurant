@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}About Us{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/about_us.css' %}">
+    <section class="about-container">
+        <h1>About Foodly</h1>
+
+        <p class="intro">
+            Foodly is an online restaurant platform designed to make food ordering simple,
+            fast, and enjoyable.
+        </p>
+
+        <p>
+            We connect people with their favorite meals from trusted restaurants, all in one
+            easy-to-use place. Whether you're craving comfort food, discovering new flavors,
+            or ordering for a special moment, Foodly brings great food closer to you.
+        </p>
+
+        <div class="values">
+            <div class="value-card">
+                <h3>🍽 Quality Food</h3>
+                <p>Carefully selected meals from reliable restaurants.</p>
+            </div>
+
+            <div class="value-card">
+                <h3>⚡ Fast & Easy</h3>
+                <p>A smooth experience from browsing to ordering.</p>
+            </div>
+
+            <div class="value-card">
+                <h3>❤️ Built for People</h3>
+                <p>We believe food creates moments worth sharing.</p>
+            </div>
+        </div>
+
+        <p class="closing">
+            At Foodly, we don’t just deliver food — we deliver experiences.
+        </p>
+    </section>
+{% endblock %}

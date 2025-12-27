@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <title>{% block page_title %}Foodly{% endblock %}</title>
+</head>
+<body>
+    <div class="header-content">
+        <h1>Foodly</h1>
+
+        <div class="header-items">
+            <nav class="top-nav">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'meals' %}">Meals</a>
+                <a href="{% url 'cart' %}">Cart</a>
+                <a href="{% url 'about_us' %}">About Us</a>
+            </nav>
+
+            <nav class="bottom-nav">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'account_logout' %}">Logout</a>
+                    <a href="{% url 'profile' %}">Profile</a>
+                {% else %}
+                    <a href="{% url 'account_login' %}">Login</a>
+                    <a href="{% url 'account_signup' %}">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+    <main>
+        {% block content %}
+            No content available.
+        {% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}Meals{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/meals.css' %}">
+
+    <h2>Meals</h2>
+    <div class="meal-content">
+        {% for meal in meals %}
+            <a href="{% url 'meal' meal.id %}">
+                <div class="meal-card">
+                    <div class="meal-image">
+                        {% if meal.image %}
+                            <img src="{{ meal.image.url }}" alt="{{ meal.name }}">
+                        {% else %}
+                            <img src="{% static 'images/default-meal.jpg' %}" alt="No image">
+                        {% endif %}
+                    </div>
+                    <div class="meal-info">
+                        <h4>{{ meal.name }}</h4>
+                        <p>${{ meal.price }}</p>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <p>No meals available.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

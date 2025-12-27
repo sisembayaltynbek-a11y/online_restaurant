@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/meal.css' %}">
+
+    <div class="selected-card">
+
+        <div class="selected-card-top">
+            <div class="selected-card-info">
+                <h1>{{ meal.name }}</h1>
+                <h2>${{ meal.price }}</h2>
+
+                <div class="meal-content">
+                    <p>Description: {{ meal.description }}</p>
+                    <p>Ingredients: {{ meal.ingredients }}</p>
+                    <p>Type: {{ meal.type }}</p>
+                    <p>Halal: {{ meal.halal }}</p>
+                </div>
+                <form method="post" action="{% url 'add-to-cart' meal.id %}" class="add-to-cart">
+                    {% csrf_token %}
+                    <button class="cart-btn">Submit</button>
+                </form>
+            </div>
+            
+
+            {% if meal.image %}
+            <div class="selected-card-image">
+                <img src="{{ meal.image.url }}" alt="{{ meal.name }}">
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endblock %}

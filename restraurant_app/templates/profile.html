@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}Profile{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <div class="profile-container">
+
+        <h1 class="profile-title">My Profile</h1>
+
+        <div class="profile-card">
+            <div class="profile-basic">
+                <p><span>Username:</span> {{ user.username }}</p>
+                <p><span>Email:</span> {{ user.email }}</p>
+            </div>
+
+            {% if google_account %}
+                {% with google_account.extra_data as data %}
+                    <div class="profile-google">
+
+                        {% if data.picture %}
+                            <img src="{{ data.picture }}" alt="Profile Picture" class="profile-img">
+                        {% endif %}
+                        
+                        <p><span>Full name:</span> {{ data.name }}</p>
+                        <p><span>Given name:</span> {{ data.given_name }}</p>
+                        <p><span>Family name:</span> {{ data.family_name }}</p>
+                        <p><span>Google email:</span> {{ data.email }}</p>
+                        <!-- <p><span>Email verified:</span> {{ data.verified_email }}</p>
+                        <p><span>Google ID:</span> {{ data.sub }}</p> -->
+
+                    </div>
+                {% endwith %}
+            {% else %}
+                <p class="no-google">No Google account connected.</p>
+            {% endif %}
+
+            <a href="{% url 'logout' %}"> Logout </a>
+        </div>
+
+    </div>
+{% endblock %}

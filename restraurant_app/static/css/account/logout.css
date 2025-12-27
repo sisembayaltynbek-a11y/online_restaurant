@@ -1,0 +1,80 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* ================= BODY ================= */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #111827;
+    color: #f9fafb;
+}
+
+/* ================= CONTAINER ================= */
+.auth-container {
+    background-color: #1f2937;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* ================= HEADER ================= */
+.auth-container h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #22c55e;
+}
+
+.auth-container p {
+    font-size: 14px;
+    color: #d1d5db;
+    margin-bottom: 25px;
+}
+
+/* ================= FORM ================= */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* ================= BUTTONS ================= */
+.btn-logout {
+    padding: 12px;
+    background-color: #22c55e;
+    color: #111827;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #16a34a;
+}
+
+.btn-cancel {
+    display: inline-block;
+    text-align: center;
+    padding: 12px;
+    background-color: #374151;
+    color: #f9fafb;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #4b5563;
+}

@@ -1,0 +1,52 @@
+<!-- templates/account/signup.html -->
+{% load static %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block page_title %}Sign Up - Foodly{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/account/signup.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <h2>Create Account</h2>
+            <p>Join our community and start your food journey</p>
+        </div>
+        
+        <form method="post" class="signup-form">
+            {% csrf_token %}
+            
+            {{form.as_p}}
+            
+            <div class="form-checkbox">
+                <input type="checkbox" name="terms" id="terms" required>
+                <label for="terms">
+                    I agree to the <a href="" class="link">Terms & Conditions</a> and <a href="#" class="link">Privacy Policy</a>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn-signup">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+        </form>
+        
+        <div class="divider">
+            <span>Or sign up with</span>
+        </div>
+        
+        <a href="{% provider_login_url 'google' %}" class="btn-google">
+            <i class="fab fa-google"></i>
+            Sign Up with Google
+        </a>
+        
+        <div class="login-link">
+            Already have an account? <a href="{% url 'login' %}" class="link">Sign In</a>
+        </div>
+    </div>
+</body>
+</html>

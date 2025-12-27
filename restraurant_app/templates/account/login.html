@@ -1,0 +1,44 @@
+{% load static %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block page_title %}Login - Foodly{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/account/login.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">  
+            <h2>Welcome Back</h2>
+            <p>Sign in to continue to your account</p>
+        </div>
+        
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            
+            {{form.as_p}}   
+            
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+        </form>
+        
+        <div class="divider">
+            <span>Or continue with</span>
+        </div>
+        
+        <a href="{% provider_login_url 'google' %}" class="btn-google">
+            <i class="fab fa-google"></i>
+            Sign In with Google
+        </a>
+        
+        <div class="signup-link">
+            Don't have an account? <a href="{% url 'signup' %}" class="link">Sign up</a>
+        </div>
+    </div>
+</body>
+</html>

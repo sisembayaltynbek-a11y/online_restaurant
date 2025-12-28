@@ -158,12 +158,14 @@
 
 
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from allauth.account.views import LoginView as AllauthLoginView
 from allauth.account.views import SignupView as AllauthSignupView
 from allauth.account.views import LogoutView as AllauthLogoutView
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.auth.views import LogoutView, LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.auth.forms import UserCreationForm
 from django.views import View
 from django.views.decorators.http import require_POST
 from .models import MealType, Meal, Deliveries
@@ -262,15 +264,27 @@ def cart_view(request):
     })
 
 # -----------------authorization section-----------------
-class LoginView(AllauthLoginView):
+class LoginView(LoginView):
     template_name = 'account/login.html'
     success_url = '/'
 
-class SignupView(AllauthSignupView):
-    template_name = 'account/signup.html'
-    success_url = '/'
+# class SignupView(AllauthSignupView):
+#     template_name = 'account/signup.html'
+#     success_url = '/'
 
-class LogoutView(AllauthLogoutView):
+def register(request):
+    if request.method =='POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, "signup.html", {
+        "form":form,
+    })
+
+class LogoutView(LogoutView):
     template_name = 'account/logout.html'
     success_url = '/'
 

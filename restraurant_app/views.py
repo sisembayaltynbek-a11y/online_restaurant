@@ -1,161 +1,3 @@
-# import random
-# from django.shortcuts import get_object_or_404, redirect, render
-# from django.contrib.auth.decorators import login_required
-# from django.views.decorators.http import require_POST
-# from django.views import View
-# from django.db import transaction
-# from decimal import Decimal
-
-# from allauth.account.views import LoginView as AllauthLoginView
-# from allauth.account.views import SignupView as AllauthSignupView
-# from allauth.account.views import LogoutView as AllauthLogoutView
-
-# from .models import MealType, Meal, Deliveries, Order, OrderItem
-
-
-
-# # ----------------- HOME -----------------
-# class HomeView(View):
-#     def get(self, request):
-#         return render(request, 'home.html', {
-#             'all_types': MealType.objects.all(),
-#             'staged_employees': Deliveries.objects.filter(working_age__gte=3)
-#         })
-
-
-# def web_insurance_view(request):
-#     return render(request, 'about_us.html')
-
-
-# # ----------------- PROFILE -----------------
-# @login_required
-# def profile_view(request):
-#     google_account = request.user.socialaccount_set.filter(provider='google').first()
-
-#     return render(request, 'profile.html', {
-#         'user': request.user,
-#         'google_account': google_account
-#     })
-
-
-# # ----------------- MEALS -----------------
-# def meals_view(request):
-#     return render(request, 'meals.html', {
-#         'meals': Meal.objects.all()
-#     })
-
-
-# def meal_view(request, id):
-#     return render(request, 'meal.html', {
-#         'meal': get_object_or_404(Meal, id=id)
-#     })
-
-
-# # ----------------- CART -----------------
-# @require_POST
-# def add_to_cart(request, id):
-#     meal = get_object_or_404(Meal, id=id)
-#     cart = request.session.get('cart', {})
-#     meal_id = str(meal.id)
-
-#     if meal_id in cart:
-#         cart[meal_id]['qty'] += 1
-#     else:
-#         cart[meal_id] = {
-#             'name': meal.name,
-#             'price': float(meal.price),
-#             'qty': 1,
-#             'image': meal.image.url if meal.image else ''
-#         }
-
-#     request.session['cart'] = cart
-#     request.session.modified = True
-#     return redirect(request.META.get('HTTP_REFERER', '/meals/'))
-
-# def cart_view(request):
-#     cart = request.session.get('cart', {})
-#     total = sum(item['price'] * item['qty'] for item in cart.values())
-
-#     free_deliveries = Deliveries.objects.filter(is_free=True)
-#     preview_delivery = random.choice(free_deliveries) if free_deliveries.exists() else None
-
-#     return render(request, 'cart.html', {
-#         'cart': cart,
-#         'total': total,
-#         'delivery': preview_delivery,
-#     })
-# # ----------------- CHECKOUT / ORDER -----------------
-# def get_random_free_delivery():
-#     free_deliveries = Deliveries.objects.filter(is_free=True)
-
-#     if not free_deliveries.exists():
-#         return None
-
-#     return random.choice(list(free_deliveries))
-
-# @login_required
-# def checkout_view(request):
-#     cart = request.session.get('cart', {})
-
-#     if not cart:
-#         return redirect('cart')
-
-#     with transaction.atomic():
-#         delivery = get_random_free_delivery()
-    
-#         total_price = sum(
-#             Decimal(item['price']) * item['qty']
-#             for item in cart.values()
-#         )
-
-#         order = Order.objects.create(
-#             user=request.user,
-#             delivery=delivery,
-#             total_price=total_price
-#         )
-
-#         for meal_id, item in cart.items():
-#             OrderItem.objects.create(
-#                 order=order,
-#                 meal_id=int(meal_id),
-#                 quantity=item['qty'],
-#                 price=Decimal(item['price'])
-#             )
-
-#         if delivery:
-#             delivery.is_free = False
-#             delivery.save()
-
-#         request.session['cart'] = {}
-#         request.session.modified = True
-
-#     return redirect('order_success', order_id=order.id)
-
-
-# @login_required
-# def order_success(request, order_id):
-#     order = get_object_or_404(Order, id=order_id, user=request.user)
-
-#     return render(request, 'order_success.html', {
-#         'order': order
-#     })
-
-
-# # ----------------- AUTH -----------------
-# class LoginView(AllauthLoginView):
-#     template_name = 'account/login.html'
-#     success_url = '/'
-
-
-# class SignupView(AllauthSignupView):
-#     template_name = 'account/signup.html'
-#     success_url = '/'
-
-
-# class LogoutView(AllauthLogoutView):
-#     template_name = 'account/logout.html'
-#     success_url = '/'
-
 from decimal import Decimal
 import random
 
@@ -164,9 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect
+from django.db import transaction
 
 from allauth.account.views import LoginView as AllauthLoginView
-from allauth.account.views import SignupView as AllauthSignupView
 from allauth.account.views import LogoutView as AllauthLogoutView
 from allauth.socialaccount.models import SocialAccount
 
@@ -190,9 +32,6 @@ class HomeView(View):
             'all_types': all_types,
             'staged_employees': checked_employees
         })
-
-    def post(self, request):
-        return self.get(request)
 
 
 # ----------------- ABOUT US -----------------
@@ -267,6 +106,61 @@ def cart_view(request):
         'cart': cart,
         'total': total,
         'deliveries': deliveries
+    })
+
+
+# ----------------- CHECKOUT / ORDER -----------------
+def get_random_free_delivery():
+    free_deliveries = Deliveries.objects.filter(is_free=True)
+    if not free_deliveries.exists():
+        return None
+    return random.choice(list(free_deliveries))
+
+
+@login_required
+def checkout_view(request):
+    cart = request.session.get('cart', {})
+    
+    if not cart:
+        return redirect('cart')
+    
+    with transaction.atomic():
+        delivery = get_random_free_delivery()
+        
+        total_price = sum(
+            Decimal(item['price']) * item['qty']
+            for item in cart.values()
+        )
+
+        order = Order.objects.create(
+            user=request.user,
+            delivery=delivery,
+            total_price=total_price
+        )
+
+        for meal_id, item in cart.items():
+            OrderItem.objects.create(
+                order=order,
+                meal_id=int(meal_id),
+                quantity=item['qty'],
+                price=Decimal(item['price'])
+            )
+
+        if delivery:
+            delivery.is_free = False
+            delivery.save()
+
+        request.session['cart'] = {}
+        request.session.modified = True
+
+    return redirect('order_success', order_id=order.id)
+
+
+@login_required
+def order_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'order_success.html', {
+        'order': order
     })
 
 

@@ -8,6 +8,7 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect
 from django.db import transaction
 
+from allauth.account.views import SignupView as AllauthSignUpView
 from allauth.account.views import LoginView as AllauthLoginView
 from allauth.account.views import LogoutView as AllauthLogoutView
 from allauth.socialaccount.models import SocialAccount
@@ -17,6 +18,8 @@ from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView,
     PasswordResetConfirmView, PasswordResetCompleteView
 )
+
+from django.urls import reverse_lazy
 
 from .models import MealType, Meal, Deliveries, Order, OrderItem
 
@@ -169,17 +172,19 @@ class LoginView(AllauthLoginView):
     template_name = 'account/login.html'
     success_url = '/'
 
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect(reverse('login'))  # allauth login URL
+#     else:
+#         form = UserCreationForm()
+#     return render(request, "signup.html", {"form": form})
 
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, "signup.html", {"form": form})
-
+class SignUp(AllauthSignUpView):
+    template_name = 'account/signup.html'
+    success_url = reverse_lazy('home')
 
 class LogoutView(AllauthLogoutView):
     template_name = 'account/logout.html'

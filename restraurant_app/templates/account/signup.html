@@ -34,6 +34,14 @@
                 <i class="fas fa-user-plus"></i> Create Account
             </button>
         </form>
+
+        <div class="social-login">
+            <div class="divider"><span>Or</span></div>
+            <a href="{% provider_login_url 'google' %}" class="btn-social btn-google">
+                <span class="icon"></span>
+                Sign in with Google
+            </a>
+        </div>
         
         <div class="login-link">
             Already have an account? <a href="{% url 'login' %}" class="link">Sign In</a>

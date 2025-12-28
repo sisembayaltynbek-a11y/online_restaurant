@@ -16,7 +16,11 @@
             <nav class="top-nav">
                 <a href="{% url 'home' %}">Home</a>
                 <a href="{% url 'meals' %}">Meals</a>
-                <a href="{% url 'cart' %}">Cart</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'cart' %}">Cart</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Cart</a>
+                {% endif %}
                 <a href="{% url 'about_us' %}">About Us</a>
             </nav>
 

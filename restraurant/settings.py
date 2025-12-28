@@ -146,7 +146,9 @@ SOCIALACCOUNT_PROVIDERS = {
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # <-- where your local static files are
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

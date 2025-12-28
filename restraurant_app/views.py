@@ -156,21 +156,30 @@
 #     template_name = 'account/logout.html'
 #     success_url = '/'
 
+from decimal import Decimal
+import random
 
-
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from django.views.decorators.http import require_POST
+from django.http import HttpResponseRedirect
+
 from allauth.account.views import LoginView as AllauthLoginView
 from allauth.account.views import SignupView as AllauthSignupView
 from allauth.account.views import LogoutView as AllauthLogoutView
-from django.contrib.auth.views import LogoutView, LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from django.contrib.auth.forms import UserCreationForm
-from django.views import View
-from django.views.decorators.http import require_POST
-from .models import MealType, Meal, Deliveries
+from allauth.socialaccount.models import SocialAccount
 
-# -----------------main section---------------------
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import (
+    PasswordResetView, PasswordResetDoneView,
+    PasswordResetConfirmView, PasswordResetCompleteView
+)
+
+from .models import MealType, Meal, Deliveries, Order, OrderItem
+
+
+# ----------------- HOME -----------------
 class HomeView(View):
     def get(self, request):
         all_types = MealType.objects.all()
@@ -183,49 +192,45 @@ class HomeView(View):
         })
 
     def post(self, request):
-        all_types = MealType.objects.all()
-        all_deliveries = Deliveries.objects.all()
-        checked_employees = [d for d in all_deliveries if d.working_age >= 3]
+        return self.get(request)
 
-        return render(request, 'home.html', {
-            'all_types': all_types,
-            'staged_employees': checked_employees
-        })
 
-# -----------------web insurance/about_us-----------------
+# ----------------- ABOUT US -----------------
 def web_insurance_view(request):
     return render(request, 'about_us.html')
 
-# -----------------personal section-----------------
+
+# ----------------- PROFILE -----------------
 @login_required
 def profile_view(request):
     user = request.user
-    google_account = None
-    if user.socialaccount_set.exists():
-        google_account = user.socialaccount_set.filter(provider='google').first()
+    google_account = SocialAccount.objects.filter(user=user, provider='google').first()
 
     return render(request, 'profile.html', {
         'user': user,
         'google_account': google_account,
     })
 
-# -----------------meal section-----------------
+
+# ----------------- MEALS -----------------
 def meals_view(request):
     meals = Meal.objects.all()
     return render(request, 'meals.html', {'meals': meals})
+
 
 def meal_view(request, id):
     selected_meal = get_object_or_404(Meal, id=id)
     return render(request, 'meal.html', {'meal': selected_meal})
 
-# -----------------cart section-----------------
+
+# ----------------- CART -----------------
 @require_POST
 def add_to_cart(request, id):
     meal = get_object_or_404(Meal, id=id)
     cart = request.session.get('cart', {})
-    meal_id_str = str(meal.id)  # use string for JSON serialization
+    meal_id_str = str(meal.id)
 
-    price = float(meal.price)  # convert Decimal to float
+    price = float(meal.price)
 
     if meal_id_str in cart:
         cart[meal_id_str]['qty'] += 1
@@ -234,28 +239,29 @@ def add_to_cart(request, id):
             'name': meal.name,
             'price': price,
             'qty': 1,
-            'image': meal.image.url if meal.image else '',
+            'image': meal.image.url if meal.image and hasattr(meal.image, 'url') else ''
         }
 
     request.session['cart'] = cart
     request.session.modified = True
     return redirect(request.META.get('HTTP_REFERER', '/meals/'))
 
+
 @login_required
 def cart_view(request):
     cart = request.session.get('cart', {})
-    total = sum(item['price'] * item['qty'] for item in cart.values())
+    total = sum(Decimal(item['price']) * item['qty'] for item in cart.values())
     deliveries = Deliveries.objects.filter(is_free=True)
 
     if request.method == 'POST':
         delivery_id = request.POST.get('delivery')
         if delivery_id:
-            delivery = get_object_or_404(Deliveries, id=delivery_id, is_free=True)
+            delivery = get_object_or_404(Deliveries, id=int(delivery_id), is_free=True)
             request.session['chosen_delivery'] = {
                 'id': delivery.id,
                 'name': f"{delivery.first_name} {delivery.last_name}"
             }
-            return redirect('cart')  # can later redirect to checkout
+            return redirect('cart')
 
     return render(request, 'cart.html', {
         'cart': cart,
@@ -263,43 +269,44 @@ def cart_view(request):
         'deliveries': deliveries
     })
 
-# -----------------authorization section-----------------
-class LoginView(LoginView):
+
+# ----------------- AUTH -----------------
+class LoginView(AllauthLoginView):
     template_name = 'account/login.html'
     success_url = '/'
 
-# class SignupView(AllauthSignupView):
-#     template_name = 'account/signup.html'
-#     success_url = '/'
 
 def register(request):
-    if request.method =='POST':
+    if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('login')
     else:
         form = UserCreationForm()
-    return render(request, "signup.html", {
-        "form":form,
-    })
+    return render(request, "signup.html", {"form": form})
 
-class LogoutView(LogoutView):
+
+class LogoutView(AllauthLogoutView):
     template_name = 'account/logout.html'
     success_url = '/'
 
-# -----------------authorization password section-----------------
+
+# ----------------- PASSWORD RESET -----------------
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'account/password_reset.html'
-    email_template_name = 'account/password_reset_email.html' 
-    success_url = '/account/password-reset-done/'
+    email_template_name = 'account/password_reset_email.html'
+    success_url = '/password-reset/done/'
+
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'account/password_reset_done.html'
 
+
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'account/password_reset_confirm.html'
-    success_url = '/account/password-reset-complete/'
+    success_url = '/reset/done/'
+
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'account/password_reset_complete.html'

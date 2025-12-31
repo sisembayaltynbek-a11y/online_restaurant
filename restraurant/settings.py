@@ -173,6 +173,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'shmakeyh12@gmail.com'
 EMAIL_HOST_PASSWORD = 'harhsvkwbynumtru'
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://car-store-1lom.onrender.com",
-]
+CSRF_TRUSTED_ORIGINS = ["https://online-restaurant-ct16.onrender.com"]

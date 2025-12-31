@@ -12,9 +12,9 @@ urlpatterns = [
     path('order-success/<int:order_id>/', views.order_success, name='order_success'),
     path('about_us/', views.web_insurance_view, name='about_us'),
 
-    path('accounts/login/', views.LoginView.as_view(), name='login'),
-    path('accounts/signup/', views.SignUp.as_view(), name='signup'),
-    path('accounts/logout/', views.LogoutView.as_view(), name='logout'),
+    path("accounts/login/", views.CustomLoginView.as_view(), name="account_login"),
+    path("accounts/signup/", views.register_view, name="account_signup"),
+    path("accounts/logout/", views.custom_logout_view, name="account_logout"),
 
     path('password-reset/', views.CustomPasswordResetView.as_view(), name='password_reset'),
     path('password-reset/done/', views.CustomPasswordResetDoneView.as_view(), name='password_reset_done'),

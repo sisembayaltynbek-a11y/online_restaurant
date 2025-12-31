@@ -8,15 +8,15 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect
 from django.db import transaction
 
-from allauth.account.views import SignupView as AllauthSignUpView
-from allauth.account.views import LoginView as AllauthLoginView
-from allauth.account.views import LogoutView as AllauthLogoutView
+# from allauth.account.views import LoginView,LogoutView,SignupView
 from allauth.socialaccount.models import SocialAccount
 
+from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView,
-    PasswordResetConfirmView, PasswordResetCompleteView
+    PasswordResetConfirmView, PasswordResetCompleteView,
+    LoginView, LogoutView
 )
 
 from django.urls import reverse_lazy
@@ -168,34 +168,32 @@ def order_success(request, order_id):
 
 
 # ----------------- AUTH -----------------
-class LoginView(AllauthLoginView):
-    template_name = 'account/login.html'
-    success_url = '/'
+class CustomLoginView(LoginView):
+    template_name = "account/login.html"
+    success_url = reverse_lazy("home")
 
-# def register(request):
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect(reverse('login'))  # allauth login URL
-#     else:
-#         form = UserCreationForm()
-#     return render(request, "signup.html", {"form": form})
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('account_login'))
+    else:
+        form = UserCreationForm()
+    return render(request, 'account/signup.html', {'form': form})
 
-class SignUp(AllauthSignUpView):
-    template_name = 'account/signup.html'
-    success_url = reverse_lazy('home')
-
-class LogoutView(AllauthLogoutView):
-    template_name = 'account/logout.html'
-    success_url = '/'
-
-
+@login_required
+def custom_logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')
+    
+    return render(request, 'account/logout.html')
 # ----------------- PASSWORD RESET -----------------
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'account/password_reset.html'
     email_template_name = 'account/password_reset_email.html'
-    success_url = '/password-reset/done/'
+    success_url = reverse_lazy('password_reset_done')
 
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
@@ -204,7 +202,7 @@ class CustomPasswordResetDoneView(PasswordResetDoneView):
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'account/password_reset_confirm.html'
-    success_url = '/reset/done/'
+    success_url = reverse_lazy('password_reset_complete')
 
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):

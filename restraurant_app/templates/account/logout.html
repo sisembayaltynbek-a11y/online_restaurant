@@ -12,7 +12,7 @@
     <div class="auth-container">
         <h2>Confirm Logout</h2>
         <p>Are you sure you want to logout?</p>
-        <form method="post" class="auth-form">
+        <form method="post" action="{% url 'account_logout' %}" class="auth-form">
             {% csrf_token %}
             <button type="submit" class="btn-logout">Logout</button>
             <a href="{% url 'home' %}" class="btn-cancel">Cancel</a>

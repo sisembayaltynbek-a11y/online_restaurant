@@ -19,18 +19,18 @@
                 {% if user.is_authenticated %}
                     <a href="{% url 'cart' %}">Cart</a>
                 {% else %}
-                    <a href="{% url 'login' %}">Cart</a>
+                    <a href="{% url 'account_login' %}">Cart</a>
                 {% endif %}
                 <a href="{% url 'about_us' %}">About Us</a>
             </nav>
 
             <nav class="bottom-nav">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}">Logout</a>
+                    <a href="{% url 'account_logout' %}">Logout</a>
                     <a href="{% url 'profile' %}">Profile</a>
                 {% else %}
-                    <a href="{% url 'login' %}">Login</a>
-                    <a href="{% url 'signup' %}">Sign Up</a>
+                    <a href="{% url 'account_login' %}">Login</a>
+                    <a href="{% url 'account_signup' %}">Sign Up</a>
                 {% endif %}
             </nav>
         </div>

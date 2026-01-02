@@ -1,23 +1,49 @@
 from django.urls import path
-from . import views
+from .views import (
+    HomeView,
+    meals_view,
+    meal_view,
+    cart_view,
+    add_to_cart,
+    checkout_view,
+    order_success,
+    web_insurance_view,
+    profile_view,
+
+    CustomLoginView,
+    CustomSignupView,
+    CustomLogoutView,
+
+    CustomPasswordResetView,
+    CustomPasswordResetDoneView,
+    CustomPasswordResetConfirmView,
+    CustomPasswordResetCompleteView,
+)
 
 urlpatterns = [
-    path('', views.HomeView.as_view(), name='home'),
-    path('meals/', views.meals_view, name='meals'),
-    path('meals/<int:id>/', views.meal_view, name='meal'),
-    path('profile/', views.profile_view, name='profile'),
-    path('cart/', views.cart_view, name='cart'),
-    path('cart/add/<int:id>/', views.add_to_cart, name='add-to-cart'),
-    path('checkout/', views.checkout_view, name='checkout'),
-    path('order-success/<int:order_id>/', views.order_success, name='order_success'),
-    path('about_us/', views.web_insurance_view, name='about_us'),
+    # ----------------- MAIN -----------------
+    path("", HomeView.as_view(), name="home"),
+    path("about_us/", web_insurance_view, name="about_us"),
 
-    path("accounts/login/", views.CustomLoginView.as_view(), name="account_login"),
-    path("accounts/signup/", views.register_view, name="account_signup"),
-    path("accounts/logout/", views.custom_logout_view, name="account_logout"),
+    # ----------------- MEALS -----------------
+    path("meals/", meals_view, name="meals"),
+    path("meals/<int:id>/", meal_view, name="meal"),
 
-    path('password-reset/', views.CustomPasswordResetView.as_view(), name='password_reset'),
-    path('password-reset/done/', views.CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', views.CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', views.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    # ----------------- CART & ORDER -----------------
+    path("cart/", cart_view, name="cart"),
+    path("cart/add/<int:id>/", add_to_cart, name="add-to-cart"),
+    path("checkout/", checkout_view, name="checkout"),
+    path("order-success/<int:order_id>/", order_success, name="order_success"),
+    path("profile/", profile_view, name="profile"),
+
+    # ----------------- AUTH (ALLAUTH) -----------------
+    path("login/", CustomLoginView.as_view(), name="login"),
+    path("register/", CustomSignupView.as_view(), name="register"),
+    path("logout/", CustomLogoutView.as_view(), name="logout"),
+
+    # ----------------- PASSWORD RESET -----------------
+    path("password-reset/", CustomPasswordResetView.as_view(), name="password_reset"),
+    path("password-reset/done/", CustomPasswordResetDoneView.as_view(), name="password_reset_done"),
+    path("password-reset/confirm/<uidb64>/<token>/", CustomPasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path("password-reset/complete/", CustomPasswordResetCompleteView.as_view(), name="password_reset_complete"),
 ]

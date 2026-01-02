@@ -1,21 +1,22 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %} Order {% endblock %}
+
 {% block content %}
+  <div class="card">
+    <h1>Order Successful 🎉</h1>
+    <p>Order ID: {{ order.id }}</p>
+    <p>Total: ${{ order.total_price }}</p>
 
-<div class="card">
-  <h1>Order Successful 🎉</h1>
-  <p>Order ID: {{ order.id }}</p>
-  <p>Total: ${{ order.total_price }}</p>
+    {% if order.delivery %}
+      <p>
+        Delivery assigned:
+        <strong>{{ order.delivery.first_name }} {{ order.delivery.last_name }}</strong>
+      </p>
+    {% else %}
+      <p>No delivery available at the moment.</p>
+    {% endif %}
 
-  {% if order.delivery %}
-    <p>
-      Delivery assigned:
-      <strong>{{ order.delivery.first_name }} {{ order.delivery.last_name }}</strong>
-    </p>
-  {% else %}
-    <p>No delivery available at the moment.</p>
-  {% endif %}
-
-  <a href="{% url 'meals' %}">Continue shopping</a>
-</div>
-
+    <a href="{% url 'meals' %}">Continue shopping</a>
+  </div>
 {% endblock %}

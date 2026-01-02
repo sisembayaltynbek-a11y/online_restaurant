@@ -6,75 +6,61 @@
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-/* ================= BODY ================= */
 body {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
-    background-color: #111827;
-    color: #f9fafb;
+    background: linear-gradient(135deg, #fee2e2, #fef3c7);
+    padding-top: 60px;
 }
 
-/* ================= CONTAINER ================= */
-.auth-container {
-    background-color: #1f2937;
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+.page-container {
     width: 100%;
-    max-width: 400px;
+    max-width: 360px;
     text-align: center;
 }
 
-/* ================= HEADER ================= */
-.auth-container h2 {
-    font-size: 26px;
-    margin-bottom: 10px;
-    color: #22c55e;
+.page-container h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #ef4444;
+    font-weight: 600;
 }
 
-.auth-container p {
-    font-size: 14px;
-    color: #d1d5db;
-    margin-bottom: 25px;
+form {
+    background-color: #ffffff;
+    padding: 35px 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-/* ================= FORM ================= */
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* ================= BUTTONS ================= */
-.btn-logout {
-    padding: 12px;
-    background-color: #22c55e;
-    color: #111827;
-    border: none;
-    border-radius: 8px;
+form p {
     font-size: 16px;
+    margin-bottom: 20px;
+    color: #6b7280;
+}
+
+form button {
+    width: 100%;
+    padding: 14px 0;
+    background-color: #ef4444;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
     transition: 0.3s ease;
 }
 
-.btn-logout:hover {
-    background-color: #16a34a;
+form button:hover {
+    background-color: #dc2626;
 }
 
-.btn-cancel {
-    display: inline-block;
-    text-align: center;
-    padding: 12px;
-    background-color: #374151;
-    color: #f9fafb;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: 0.3s ease;
-}
-
-.btn-cancel:hover {
-    background-color: #4b5563;
+@media (max-width: 480px) {
+    body { padding-top: 40px; }
+    .page-container h2 { font-size: 28px; margin-bottom: 25px; }
+    form { padding: 25px 20px; }
+    form button { font-size: 15px; padding: 12px 0; }
 }

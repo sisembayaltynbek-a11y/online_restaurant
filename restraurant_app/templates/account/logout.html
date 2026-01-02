@@ -5,17 +5,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block page_title %}Logout - Foodly{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/logout.css' %}">
+    <title>Logout</title>
+    <link rel="stylesheet" href="{% static 'css/account/logout.css' %}">
 </head>
 <body>
-    <div class="auth-container">
-        <h2>Confirm Logout</h2>
-        <p>Are you sure you want to logout?</p>
-        <form method="post" action="{% url 'account_logout' %}" class="auth-form">
+    <div class="page-container">
+        <h2>Logout</h2>
+        <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
-            <button type="submit" class="btn-logout">Logout</button>
-            <a href="{% url 'home' %}" class="btn-cancel">Cancel</a>
+            <p>Are you sure you want to logout?</p>
+            <button type="submit">Logout</button>
         </form>
     </div>
 </body>

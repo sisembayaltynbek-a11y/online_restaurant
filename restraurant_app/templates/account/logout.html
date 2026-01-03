@@ -15,6 +15,7 @@
             {% csrf_token %}
             <p>Are you sure you want to logout?</p>
             <button type="submit">Logout</button>
+            <a href="{% url 'home' %}">Cancel</a>
         </form>
     </div>
 </body>

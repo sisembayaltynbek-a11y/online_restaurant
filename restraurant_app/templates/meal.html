@@ -17,10 +17,14 @@
                     <p>Type: {{ meal.type }}</p>
                     <p>Halal: {{ meal.halal }}</p>
                 </div>
-                <form method="post" action="{% url 'add-to-cart' meal.id %}" class="add-to-cart">
-                    {% csrf_token %}
-                    <button type="submit" class="cart-btn">Add to Cart</button>
-                </form>
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'add-to-cart' meal.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                    </form>
+                {% else %}
+                    
+                {% endif %}
             </div>
             
 

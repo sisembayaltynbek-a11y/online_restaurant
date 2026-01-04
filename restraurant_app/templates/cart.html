@@ -62,9 +62,10 @@
                     {% else %}
                         <p class="no-delivery">No free deliveries available now.</p>
                     {% endif %}
-
-                    <button type="submit" class="checkout-btn">
-                        Confirm order
+                    <button class="checkout-btn">
+                        <a href="{% url 'order_success' %}">
+                            Confirm order
+                        </a>
                     </button>
                 </form>
 

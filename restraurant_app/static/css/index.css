@@ -13,7 +13,7 @@
     background: linear-gradient(120deg, #16a34a 0%, #86efac 100%);
     border-radius: 16px;
     color: #ffffff;
-    margin-bottom: 50px;
+    margin: 0 20px 50px;
 }
 
 .hero h2 {
@@ -25,9 +25,197 @@
     font-size: 20px;
 }
 
-/* ================= SECTION TITLES ================= */
+/* ================= SLIDER SECTION ================= */
+.slider-meals {
+    margin: 0 20px 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-meals h3 {
+    text-align: center;
+    font-size: 28px;
+    color: #111827;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.slider-meals h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: #16a34a;
+}
+
+/* Slider Container */
+.meals-slider-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 10px 0;
+}
+
+/* Slider Animation */
+.meals-slider {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: slide-right-to-left 30s linear infinite;
+    padding: 10px 0;
+}
+
+@keyframes slide-right-to-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-50% - 15px));
+    }
+}
+
+.meals-slider:hover {
+    animation-play-state: paused;
+}
+
+/* Meal Card Container */
+.meals-slider a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Meal Card Styling */
+.meal-card {
+    flex: 0 0 280px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.meal-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+.meal-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #16a34a 0%, #86efac 100%);
+}
+
+.meal-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.meal-card:hover img {
+    transform: scale(1.05);
+}
+
+.meal-card h4 {
+    font-size: 20px;
+    color: #111827;
+    margin-bottom: 10px;
+    flex-grow: 1;
+}
+
+.meal-card > p {
+    font-size: 18px;
+    color: #16a34a;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+    background: linear-gradient(120deg, #16a34a 0%, #22c55e 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: auto;
+}
+
+.add-to-cart-btn:hover {
+    background: linear-gradient(120deg, #15803d 0%, #16a34a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(22, 163, 74, 0.3);
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
+/* Remove form styling */
+.meals-slider form {
+    margin: 0;
+    padding: 0;
+}
+
+/* Gradient edges for slider */
+.meals-slider-wrapper::before,
+.meals-slider-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.meals-slider-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, white 0%, transparent 100%);
+}
+
+.meals-slider-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, white 0%, transparent 100%);
+}
+
+/* Auto-scroll indicator */
+.auto-scroll-indicator {
+    text-align: center;
+    margin-top: 20px;
+    color: #6b7280;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.auto-scroll-indicator i {
+    color: #16a34a;
+}
+
+/* ================= MEAL TYPES SECTION ================= */
 .meal-types {
-    margin-bottom: 60px;
+    margin: 0 20px 60px;
 }
 
 .meal-types h3 {
@@ -35,6 +223,18 @@
     font-size: 28px;
     color: #111827;
     margin-bottom: 30px;
+    position: relative;
+}
+
+.meal-types h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: #16a34a;
 }
 
 /* ================= MEAL CATEGORIES ================= */
@@ -42,10 +242,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 30px;
-    margin: 0 20px;
 }
 
-/* ================= CATEGORY CARD ================= */
+/* Category Card */
 .category-card {
     background: #ffffff;
     border-radius: 18px;
@@ -53,6 +252,7 @@
     text-align: center;
     box-shadow: 0 12px 28px rgba(0,0,0,0.12);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
 .category-card:hover {
@@ -78,10 +278,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 30px;
-    margin: 0 20px;
 }
 
-/* ================= DELIVERY CARD ================= */
+/* Delivery Card */
 .delivery {
     background: #ffffff;
     border-radius: 18px;
@@ -105,7 +304,6 @@
     border: 4px solid #16a34a;
 }
 
-
 .delivery h4 {
     font-size: 18px;
     color: #111827;
@@ -113,12 +311,17 @@
 }
 
 /* ================= EMPTY STATES ================= */
+.meals-slider p,
 .meal-categories p,
 .deliveries p {
-    grid-column: 1 / -1;
+    flex: 1;
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     color: #6b7280;
+    padding: 40px 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    border: 2px dashed #d1d5db;
 }
 
 /* ================= RESPONSIVE ================= */
@@ -126,17 +329,34 @@
     .hero h2 {
         font-size: 32px;
     }
-
-    .meal-types h3 {
-        font-size: 26px;
+    
+    .hero,
+    .slider-meals,
+    .meal-types {
+        margin-left: 15px;
+        margin-right: 15px;
     }
-
+    
+    .meal-card {
+        flex: 0 0 240px;
+    }
+    
+    .meal-card img {
+        height: 160px;
+    }
+    
     .category-card img {
         height: 160px;
     }
-
-    .delivery img {
-        height: 180px;
+    
+    .meals-slider-wrapper::before,
+    .meals-slider-wrapper::after {
+        width: 60px;
+    }
+    
+    .add-to-cart-btn {
+        padding: 10px 16px;
+        font-size: 15px;
     }
 }
 
@@ -144,14 +364,42 @@
     .hero h2 {
         font-size: 28px;
     }
-
+    
     .hero p {
         font-size: 18px;
     }
-
-    .category-card h4,
+    
+    .slider-meals h3,
+    .meal-types h3 {
+        font-size: 24px;
+    }
+    
+    .meal-card {
+        flex: 0 0 220px;
+        padding: 15px;
+    }
+    
+    .meal-card h4,
+    .category-card h4 {
+        font-size: 18px;
+    }
+    
+    .meal-card > p {
+        font-size: 16px;
+    }
+    
     .delivery h4 {
         font-size: 16px;
+    }
+    
+    .meals-slider-wrapper::before,
+    .meals-slider-wrapper::after {
+        width: 40px;
+    }
+    
+    .add-to-cart-btn {
+        padding: 9px 14px;
+        font-size: 14px;
     }
 }
 
@@ -159,16 +407,55 @@
     .hero h2 {
         font-size: 24px;
     }
-
+    
     .hero p {
         font-size: 16px;
     }
-
+    
+    .slider-meals h3,
+    .meal-types h3 {
+        font-size: 22px;
+    }
+    
+    .meal-card {
+        flex: 0 0 200px;
+    }
+    
+    .meal-card img {
+        height: 140px;
+    }
+    
+    .meal-card h4 {
+        font-size: 17px;
+    }
+    
+    .meal-card > p {
+        font-size: 15px;
+    }
+    
     .category-card img {
         height: 150px;
     }
-
+    
     .delivery img {
-        height: 160px;
+        width: 120px;
+        height: 120px;
+    }
+    
+    .meals-slider-wrapper::before,
+    .meals-slider-wrapper::after {
+        width: 30px;
+    }
+    
+    .add-to-cart-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
+
+/* Fallback for browsers without max-content support */
+@supports not (width: max-content) {
+    .meals-slider {
+        width: fit-content;
     }
 }

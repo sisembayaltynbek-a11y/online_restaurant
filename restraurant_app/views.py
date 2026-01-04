@@ -20,9 +20,11 @@ class HomeView(View):
     def get(self, request):
         all_types = MealType.objects.all()
         all_deliveries = Deliveries.objects.all()
+        all_meals = Meal.objects.all()
         checked_employees = [d for d in all_deliveries if d.working_age >= 3]
 
         return render(request, "home.html", {
+            "all_meals": all_meals,
             "all_types": all_types,
             "staged_employees": checked_employees,
         })
@@ -94,48 +96,29 @@ def get_random_free_delivery():
     deliveries = Deliveries.objects.filter(is_free=True)
     return random.choice(list(deliveries)) if deliveries.exists() else None
 
-
 @login_required
-def checkout_view(request):
-    cart = request.session.get("cart", {})
-
-    if not cart:
-        return redirect("cart")
-
-    with transaction.atomic():
-        delivery = get_random_free_delivery()
-        total_price = sum(
-            Decimal(item["price"]) * item["qty"] for item in cart.values()
-        )
-
-        order = Order.objects.create(
-            user=request.user,
-            delivery=delivery,
-            total_price=total_price,
-        )
-
-        for meal_id, item in cart.items():
-            OrderItem.objects.create(
-                order=order,
-                meal_id=int(meal_id),
-                quantity=item["qty"],
-                price=Decimal(item["price"]),
-            )
-
-        if delivery:
-            delivery.is_free = False
-            delivery.save()
-
-        request.session["cart"] = {}
-        request.session.modified = True
-
-    return redirect("order_success", order_id=order.id)
-
-
-@login_required
-def order_success(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
-    return render(request, "order_success.html", {"order": order})
+def order_success(request):
+    cart = request.session.get('cart', {})
+    delivery = 5.00
+    total = 0.00
+    
+    # Calculate total
+    for item in cart.values():
+        item_price = float(item["price"])
+        item_qty = item["qty"]
+        item["total"] = item_price * item_qty
+        total += item["total"]
+    
+    # Add delivery fee
+    total += delivery
+    
+    context = {
+        'cart': cart,
+        'delivery': delivery,
+        'total': total,
+    }
+    
+    return render(request, 'order_success.html', context)
 # ----------------- AUTH (ALLAUTH) -----------------
 class CustomLoginView(LoginView):
     template_name = "account/login.html"

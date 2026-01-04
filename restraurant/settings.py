@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=p()v@bksdr%pplf$84@cfcxq9mdspy@gxf7yiu5hjr5_quw!('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', "online-restaurant-ct16.onrender.com"]
 

@@ -1,22 +1,135 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} Order {% endblock %}
+
+{% block title %}Order Confirmation - Foodly{% endblock %}
 
 {% block content %}
-  <div class="card">
-    <h1>Order Successful 🎉</h1>
-    <p>Order ID: {{ order.id }}</p>
-    <p>Total: ${{ order.total_price }}</p>
-
-    {% if order.delivery %}
-      <p>
-        Delivery assigned:
-        <strong>{{ order.delivery.first_name }} {{ order.delivery.last_name }}</strong>
-      </p>
-    {% else %}
-      <p>No delivery available at the moment.</p>
-    {% endif %}
-
-    <a href="{% url 'meals' %}">Continue shopping</a>
-  </div>
+    <link rel="stylesheet" href="{% static 'css/bill.css' %}">
+    
+    <div class="bill-container">
+        <!-- Bill Header -->
+        <div class="bill-header">
+            <div class="bill-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Order Confirmed!</h1>
+            <p>Thank you for your purchase. Your order has been successfully placed.</p>
+            <div class="status-badge status-completed">Order Completed</div>
+        </div>
+        
+        <!-- Order Information -->
+        <div class="order-info">
+            <div class="info-item">
+                <span class="info-label">Order Number</span>
+                <span class="info-value">#{% now "YmdHis" %}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Order Date</span>
+                <span class="info-value">{% now "F j, Y" %}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Customer</span>
+                <span class="info-value">{{ user.username|default:"Guest" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Payment Status</span>
+                <span class="info-value">Paid</span>
+            </div>
+        </div>
+        
+        <!-- Order Items -->
+        <div class="order-items">
+            <h3>Order Summary</h3>
+            {% if cart %}
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, item in cart.items %}
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                {% if item.image %}
+                                    <img src="{{ item.image }}" alt="{{ item.name }}" class="item-image">
+                                {% else %}
+                                    <img src="{% static 'images/default-meal.jpg' %}" alt="Default" class="item-image">
+                                {% endif %}
+                                <span class="item-name">{{ item.name }}</span>
+                            </div>
+                        </td>
+                        <td class="item-price">${{ item.price|floatformat:2 }}</td>
+                        <td class="item-quantity">{{ item.qty }}</td>
+                        <td class="item-total">${{ item.total|floatformat:2|default:"0.00" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p style="text-align: center; padding: 30px; color: #6c757d;">
+                No items in order
+            </p>
+            {% endif %}
+        </div>
+        
+        <!-- Total Section -->
+        <div class="total-section">
+            <div class="total-grid">
+                <div class="total-item">
+                    <span class="total-label">Subtotal</span>
+                    <span class="total-amount">${{ subtotal|default:"0.00" }}</span>
+                </div>
+                <div class="total-item">
+                    <span class="total-label">Delivery Fee</span>
+                    <span class="total-amount">${{ delivery|default:"0.00" }}</span>
+                </div>
+                <div class="total-item final-total">
+                    <span class="total-label">Total Amount</span>
+                    <span class="total-amount">${{ total|floatformat:2 }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Print Section -->
+        <div class="print-section">
+            <h3>Print Receipt</h3>
+            <div class="print-options">
+                <button class="print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+                <a href="{% url 'home' %}" class="print-btn">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="{% url 'meals' %}" class="btn btn-primary">
+                <i class="fas fa-shopping-cart"></i> Continue Shopping
+            </a>
+            <a href="{% url 'profile' %}" class="btn btn-secondary">
+                <i class="fas fa-user"></i> View Orders
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-outline">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+        </div>
+        
+        <!-- Thank You Note -->
+        <div class="thank-you-note">
+            <p>
+                <i class="fas fa-quote-left" style="color: #16a34a; margin-right: 10px;"></i>
+                Thank you for choosing Foodly! Your order will be prepared immediately. 
+                You'll receive an email confirmation shortly. For any questions, contact 
+                our support team at support@foodly.com
+                <i class="fas fa-quote-right" style="color: #16a34a; margin-left: 10px;"></i>
+            </p>
+        </div>
+    </div>
 {% endblock %}

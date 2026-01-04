@@ -5,8 +5,7 @@ from .views import (
     meal_view,
     cart_view,
     add_to_cart,
-    checkout_view,
-    order_success,
+    order_success,    
     web_insurance_view,
     profile_view,
 
@@ -32,8 +31,7 @@ urlpatterns = [
     # ----------------- CART & ORDER -----------------
     path("cart/", cart_view, name="cart"),
     path("cart/add/<int:id>/", add_to_cart, name="add-to-cart"),
-    path("checkout/", checkout_view, name="checkout"),
-    path("order-success/<int:order_id>/", order_success, name="order_success"),
+    path("order-success/", order_success, name="order_success"),
     path("profile/", profile_view, name="profile"),
 
     # ----------------- AUTH (ALLAUTH) -----------------

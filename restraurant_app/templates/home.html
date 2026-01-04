@@ -3,6 +3,7 @@
 {% block page_title %}Foodly{% endblock %}
 
 {% block content %}
+    <!-- Remove duplicate Font Awesome link if already in base.html -->
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 
     <section class="hero">
@@ -15,6 +16,71 @@
         {% endif %}
     </section>
 
+    <section class="slider-meals">
+        <h3>Popular Meals</h3>
+        
+        <div class="meals-slider-wrapper">
+            <div class="meals-slider">
+                {% for meal in all_meals %}
+                    <a href="{% url 'meal' meal.id %}">
+                            <div class="meal-card">
+                                {% if meal.image %}
+                                    <img src="{{ meal.image.url }}" alt="{{ meal.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/default-meal.jpg' %}" alt="Default meal">
+                                {% endif %}
+                                <h4>{{ meal.name }}</h4>
+                                <p>${{ meal.price }}</p>
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add-to-cart' meal.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                                    </form>
+                                {% else %}
+
+                                {% endif %}
+                            </div>
+                        </a>
+                {% empty %}
+                    <p>No meals available.</p>
+                {% endfor %}
+                
+                <!-- Duplicate cards for seamless scrolling -->
+                {% if all_meals|length > 0 %}
+                    {% for meal in all_meals %}
+                        <a href="{% url 'meal' meal.id %}">
+                            <div class="meal-card">
+                                {% if meal.image %}
+                                    <img src="{{ meal.image.url }}" alt="{{ meal.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/default-meal.jpg' %}" alt="Default meal">
+                                {% endif %}
+                                <h4>{{ meal.name }}</h4>
+                                <p>${{ meal.price }}</p>
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add-to-cart' meal.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                                    </form>
+                                {% else %}
+                                    
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if all_meals|length > 0 %}
+        <div class="auto-scroll-indicator">
+            <i class="fas fa-arrow-left"></i>
+            <span>Auto-scrolling • Hover to pause</span>
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        {% endif %}
+    </section>
+
     <section class="meal-types">
         <h3>Different Types of Meals</h3>
         <div class="meal-categories">
@@ -23,7 +89,7 @@
                     {% if category.image %}
                         <img src="{{ category.image.url }}" alt="{{ category.name }}">
                     {% else %}
-                        <img src="{% static 'images/default-category.jpg' %}" alt="No image">
+                        <img src="{% static 'images/default-category.jpg' %}" alt="Default category">
                     {% endif %}
                     <h4>{{ category.name }}</h4>
                 </div>
@@ -41,7 +107,7 @@
                     {% if employee.image %}
                         <img src="{{ employee.image.url }}" alt="{{ employee.name }}">
                     {% else %}
-                        <img src="{% static 'images/default-employee.jpg' %}" alt="No image">
+                        <img src="{% static 'images/default-employee.jpg' %}" alt="Default employee">
                     {% endif %}
                     <h4>{{ employee.first_name }} {{ employee.last_name }}</h4>
                 </div>

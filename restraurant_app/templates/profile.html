@@ -1,9 +1,289 @@
+<!-- templates/profile.html -->
 {% extends 'base.html' %}
+{% load static %}
 
 {% block page_title %} Profile {% endblock %}
 
-{% block content %} 
-    <h2> Your Profile</h2>
-    <p> Name, {{ user.username }}! </p>
-    <p> Email: {{ user.email }} </p>    
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <div class="profile-page">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-header-content">
+                <div class="profile-greeting">
+                    <h1>Welcome Back, {{ user.username|title }}!</h1>
+                    <p class="member-since">Member since {{ user.date_joined|date:"F d, Y" }}</p>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="stat-info">
+                            <h3>12</h3>
+                            <p>Total Orders</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <div class="stat-info">
+                            <h3>5</h3>
+                            <p>Reviews</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-coins"></i>
+                        <div class="stat-info">
+                            <h3>1,250</h3>
+                            <p>Loyalty Points</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <!-- Left Column: Profile Info -->
+            <div class="profile-sidebar">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        {% if user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" alt="{{ user.username }}">
+                        {% else %}
+                            <div class="avatar-default">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                        <div class="avatar-status">
+                            <span class="status-dot"></span>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h2>{{ user.get_full_name|default:user.username }}</h2>
+                        <p class="profile-email">
+                            <i class="fas fa-envelope"></i>
+                            {{ user.email }}
+                        </p>
+                        
+                        {% if user.phone %}
+                        <p class="profile-phone">
+                            <i class="fas fa-phone"></i>
+                            {{ user.phone }}
+                        </p>
+                        {% endif %}
+                        
+                        {% if user.address %}
+                        <p class="profile-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ user.address }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <a href="#" class="btn-edit-profile">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </a>
+                        <a href="{% url 'account_change_password' %}" class="btn-change-password">
+                            <i class="fas fa-key"></i> Change Password
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="quick-links">
+                    <h3><i class="fas fa-link"></i> Quick Links</h3>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-history"></i>
+                                <span>Order History</span>
+                                <span class="badge">12</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-heart"></i>
+                                <span>Favorite Meals</span>
+                                <span class="badge">8</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-truck"></i>
+                                <span>Delivery Addresses</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Payment Methods</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column: Content -->
+            <div class="profile-main">
+                <!-- Recent Orders -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-clock"></i> Recent Orders</h2>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="orders-list">
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="order-id">#ORD-2024-001</span>
+                                <span class="order-status delivered">Delivered</span>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-items">
+                                    <span>3 Items • Burger Combo, Fries, Coke</span>
+                                </div>
+                                <div class="order-total">
+                                    <strong>$24.99</strong>
+                                    <span class="order-date">Jan 10, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="order-id">#ORD-2024-002</span>
+                                <span class="order-status processing">Processing</span>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-items">
+                                    <span>2 Items • Pizza, Salad</span>
+                                </div>
+                                <div class="order-total">
+                                    <strong>$18.50</strong>
+                                    <span class="order-date">Jan 9, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="order-id">#ORD-2024-003</span>
+                                <span class="order-status cancelled">Cancelled</span>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-items">
+                                    <span>1 Item • Pasta</span>
+                                </div>
+                                <div class="order-total">
+                                    <strong>$12.99</strong>
+                                    <span class="order-date">Jan 8, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-user-circle"></i> Account Information</h2>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Personal Details</h3>
+                                <p>Update your name, email, and contact information</p>
+                                <a href="#" class="info-link">Edit Details</a>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Security</h3>
+                                <p>Change password and security settings</p>
+                                <a href="{% url 'account_change_password' %}" class="info-link">Manage Security</a>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Notifications</h3>
+                                <p>Configure your notification preferences</p>
+                                <a href="#" class="info-link">Notification Settings</a>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Delete Account</h3>
+                                <p>Permanently delete your account</p>
+                                <a href="#" class="info-link delete">Delete Account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Favorites -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-heart"></i> Favorite Meals</h2>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="favorites-grid">
+                        <div class="favorite-item">
+                            <div class="favorite-image" style="background-color: #FF6B6B;"></div>
+                            <div class="favorite-info">
+                                <h4>Classic Burger</h4>
+                                <p>$12.99</p>
+                            </div>
+                        </div>
+                        
+                        <div class="favorite-item">
+                            <div class="favorite-image" style="background-color: #4ECDC4;"></div>
+                            <div class="favorite-info">
+                                <h4>Caesar Salad</h4>
+                                <p>$9.99</p>
+                            </div>
+                        </div>
+                        
+                        <div class="favorite-item">
+                            <div class="favorite-image" style="background-color: #FFD166;"></div>
+                            <div class="favorite-info">
+                                <h4>Pepperoni Pizza</h4>
+                                <p>$16.99</p>
+                            </div>
+                        </div>
+                        
+                        <div class="favorite-item">
+                            <div class="favorite-image" style="background-color: #06D6A0;"></div>
+                            <div class="favorite-info">
+                                <h4>Spaghetti Carbonara</h4>
+                                <p>$14.99</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

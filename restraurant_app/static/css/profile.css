@@ -3,7 +3,7 @@
 /* Profile Page Styles */
 .profile-page {
     min-height: calc(100vh - 80px);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #16a34a 0%, #16a341 100%);
 }
 
 /* Profile Header */
@@ -60,7 +60,7 @@
 
 .stat-card i {
     font-size: 1.8rem;
-    color: #667eea;
+    color: #16a34a;
     background: rgba(102, 126, 234, 0.1);
     padding: 0.8rem;
     border-radius: 10px;
@@ -113,7 +113,7 @@
     width: 120px;
     height: 120px;
     margin: 0 auto;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #16a34a 0%, #16a341 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -170,7 +170,7 @@
 }
 
 .profile-email i {
-    color: #667eea;
+    color: #16a34a;
 }
 
 .profile-phone i {
@@ -202,12 +202,12 @@
 }
 
 .btn-edit-profile {
-    background: #667eea;
+    background: #16a34a;
     color: white;
 }
 
 .btn-edit-profile:hover {
-    background: #5a67d8;
+    background: #16a34a;
     transform: translateY(-2px);
 }
 
@@ -262,13 +262,13 @@
 
 .quick-links a:hover {
     background: #f8f9fa;
-    color: #667eea;
+    color: #16a34a;
     transform: translateX(5px);
 }
 
 .quick-links a i {
     width: 20px;
-    color: #667eea;
+    color: #16a34a;
 }
 
 .badge {
@@ -313,14 +313,14 @@
 }
 
 .view-all {
-    color: #667eea;
+    color: #16a34a;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .view-all:hover {
-    color: #5a67d8;
+    color: #16a34a;
 }
 
 /* Orders List */
@@ -338,7 +338,7 @@
 }
 
 .order-card:hover {
-    border-color: #667eea;
+    border-color: #16a34a;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
 }
@@ -421,7 +421,7 @@
 }
 
 .info-card:hover {
-    border-color: #667eea;
+    border-color: #16a34a;
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
 }
@@ -430,7 +430,7 @@
     background: rgba(102, 126, 234, 0.1);
     padding: 1rem;
     border-radius: 10px;
-    color: #667eea;
+    color: #16a34a;
     font-size: 1.5rem;
 }
 
@@ -447,7 +447,7 @@
 }
 
 .info-link {
-    color: #667eea;
+    color: #16a34a;
     text-decoration: none;
     font-weight: 500;
     font-size: 0.9rem;
@@ -491,7 +491,7 @@
 }
 
 .favorite-info p {
-    color: #667eea;
+    color: #16a34a;
     font-weight: 600;
     margin: 0;
 }

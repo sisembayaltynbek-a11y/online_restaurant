@@ -48,6 +48,35 @@
     margin-bottom: 12px;
 }
 
+/* ================= ADD TO CART BUTTON ================= */
+/* NOTE: This button CSS is now also in the HTML template for direct access */
+.add-to-cart-btn {
+    background-color: #16a34a;
+    color: #ffffff;
+    border: none;
+    padding: 14px 36px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 25px;
+    display: inline-block;
+}
+
+/* Hover effect */
+.add-to-cart-btn:hover {
+    background-color: #15803d;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.35);
+}
+
+/* Active (click) */
+.add-to-cart-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3);
+}
+
 /* ================= IMAGE ================= */
 .selected-card-image img {
     width: 380px;
@@ -109,33 +138,11 @@
     .selected-card-info h2 {
         font-size: 20px;
     }
-}
-/* ================= ADD TO CART ================= */
-.add-to-cart {
-    margin-top: 25px;
-}
-
-.cart-btn {
-    background-color: #16a34a;
-    color: #ffffff;
-    border: none;
-    padding: 14px 36px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* Hover effect */
-.cart-btn:hover {
-    background-color: #15803d;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.35);
-}
-
-/* Active (click) */
-.cart-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3);
+    
+    .add-to-cart-btn {
+        padding: 12px 28px;
+        font-size: 15px;
+        width: 100%;
+        text-align: center;
+    }
 }

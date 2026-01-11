@@ -2,6 +2,46 @@
 {% load static %}
 
 {% block content %}
+    <style>
+        /* ================= ADD TO CART BUTTON ================= */
+        .add-to-cart-btn {
+            background-color: #16a34a;
+            color: #ffffff;
+            border: none;
+            padding: 14px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            display: inline-block;
+        }
+
+        /* Hover effect */
+        .add-to-cart-btn:hover {
+            background-color: #15803d;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(22, 163, 74, 0.35);
+        }
+
+        /* Active (click) */
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3);
+        }
+
+        /* Mobile button optimization */
+        @media (max-width: 480px) {
+            .add-to-cart-btn {
+                padding: 12px 28px;
+                font-size: 15px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+
     <link rel="stylesheet" href="{% static 'css/meal.css' %}">
 
     <div class="selected-card">
@@ -23,7 +63,9 @@
                         <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                     </form>
                 {% else %}
-                    
+                    <a href="{% url 'login' %}" class="add-to-cart-btn" style="text-decoration: none; display: inline-block; text-align: center;">
+                        Login to Add to Cart
+                    </a>
                 {% endif %}
             </div>
             

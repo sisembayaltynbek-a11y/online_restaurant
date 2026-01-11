@@ -21,10 +21,11 @@ class HomeView(View):
         all_types = MealType.objects.all()
         all_deliveries = Deliveries.objects.all()
         all_meals = Meal.objects.all()
+        popular_meals = [meal for meal in all_meals if meal.price <= 25]
         checked_employees = [d for d in all_deliveries if d.working_age >= 3]
 
         return render(request, "home.html", {
-            "all_meals": all_meals,
+            "all_meals": popular_meals,
             "all_types": all_types,
             "staged_employees": checked_employees,
         })

@@ -132,7 +132,10 @@ class CustomLogoutView(LogoutView):
     next_page = reverse_lazy("home")
 
 def profile_view(request):
-    return render(request, "profile.html")
+    cart = request.session.get('cart', {})
+    return render(request, "profile.html", {
+        "cart": cart,
+    })
 # ----------------- AUTH (ALLAUTH) -----------------
 class CustomPasswordResetView(PasswordResetView):
     template_name = "account/password_reset.html"

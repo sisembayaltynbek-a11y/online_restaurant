@@ -250,37 +250,22 @@
                         <a href="#" class="view-all">View All</a>
                     </div>
                     <div class="favorites-grid">
-                        <div class="favorite-item">
-                            <div class="favorite-image" style="background-color: #FF6B6B;"></div>
-                            <div class="favorite-info">
-                                <h4>Classic Burger</h4>
-                                <p>$12.99</p>
+                        {% for id, food in cart.items %}
+                            <div class="favorite-item">
+                                <div class="favorite-image">
+                                    {% if food.image %}
+                                        <img src="{{ food.image.url }}" alt="{{ food.name }}">
+                                    {% endif %}
+                                </div>
+                                <div class="favorite-info">
+                                    {% if food.image %}
+                                        <img src="{{ food.image.url }}" alt="{{ food.name }}">
+                                    {% endif %}
+                                    <h4>{{ food.name }}</h4>
+                                    <p>${{ food.price }}</p>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="favorite-item">
-                            <div class="favorite-image" style="background-color: #4ECDC4;"></div>
-                            <div class="favorite-info">
-                                <h4>Caesar Salad</h4>
-                                <p>$9.99</p>
-                            </div>
-                        </div>
-                        
-                        <div class="favorite-item">
-                            <div class="favorite-image" style="background-color: #FFD166;"></div>
-                            <div class="favorite-info">
-                                <h4>Pepperoni Pizza</h4>
-                                <p>$16.99</p>
-                            </div>
-                        </div>
-                        
-                        <div class="favorite-item">
-                            <div class="favorite-image" style="background-color: #06D6A0;"></div>
-                            <div class="favorite-info">
-                                <h4>Spaghetti Carbonara</h4>
-                                <p>$14.99</p>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

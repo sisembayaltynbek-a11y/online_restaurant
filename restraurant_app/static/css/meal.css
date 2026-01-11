@@ -85,6 +85,8 @@
     border-radius: 16px;
 }
 
+
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1024px) {
     .selected-card-image img {
